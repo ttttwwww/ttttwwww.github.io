@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>底层推导 on ttttwwww&#39;s Blog</title>
-    <link>https://ttttwwww.github.io/zh/tags/%E5%BA%95%E5%B1%82%E6%8E%A8%E5%AF%BC/</link>
+    <link>http://localhost:1313/zh/tags/%E5%BA%95%E5%B1%82%E6%8E%A8%E5%AF%BC/</link>
     <description>Recent content in 底层推导 on ttttwwww&#39;s Blog</description>
     <generator>Hugo -- 0.132.2</generator>
     <language>zh</language>
     <lastBuildDate>Sun, 18 Aug 2024 23:40:48 +0800</lastBuildDate>
-    <atom:link href="https://ttttwwww.github.io/zh/tags/%E5%BA%95%E5%B1%82%E6%8E%A8%E5%AF%BC/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/zh/tags/%E5%BA%95%E5%B1%82%E6%8E%A8%E5%AF%BC/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>交叉熵反向传播</title>
-      <link>https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</link>
+      <link>http://localhost:1313/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</link>
       <pubDate>Sun, 18 Aug 2024 23:40:48 +0800</pubDate>
-      <guid>https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</guid>
+      <guid>http://localhost:1313/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</guid>
       <description>在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。 交叉熵的定义公式为 $$</description>
     </item>
     <item>
       <title>Resumse算法推导</title>
-      <link>https://ttttwwww.github.io/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/</link>
+      <link>http://localhost:1313/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/</link>
       <pubDate>Sun, 18 Aug 2024 22:25:27 +0800</pubDate>
-      <guid>https://ttttwwww.github.io/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/</guid>
+      <guid>http://localhost:1313/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/</guid>
       <description>Resume算法是Filip Ponulak等人提出的一种用于脉冲神经网络监督学习的权重更新算法，主要针对仿生神经元。 使用Resume算法训练</description>
     </item>
   </channel>

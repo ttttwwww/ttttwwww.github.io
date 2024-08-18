@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -9,16 +9,16 @@
 <meta name="keywords" content="Resume, 底层推导">
 <meta name="description" content="Resume算法是Filip Ponulak等人提出的一种用于脉冲神经网络监督学习的权重更新算法，主要针对仿生神经元。 使用Resume算法训练">
 <meta name="author" content="ttttwwww">
-<link rel="canonical" href="https://ttttwwww.github.io/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/">
+<link rel="canonical" href="http://localhost:1313/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.d3a26af427bfd58bda3afb76055d37ca2efc043066e0fc572e1126420f99fdb9.css" integrity="sha256-06Jq9Ce/1YvaOvt2BV03yi78BDBm4PxXLhEmQg&#43;Z/bk=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://ttttwwww.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://ttttwwww.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://ttttwwww.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://ttttwwww.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://ttttwwww.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="https://ttttwwww.github.io/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/">
+<link rel="alternate" hreflang="zh" href="http://localhost:1313/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/">
 <noscript>
     <style>
         #theme-toggle,
@@ -61,7 +61,7 @@
 <meta property="og:title" content="Resumse算法推导" />
 <meta property="og:description" content="Resume算法是Filip Ponulak等人提出的一种用于脉冲神经网络监督学习的权重更新算法，主要针对仿生神经元。 使用Resume算法训练" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ttttwwww.github.io/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="http://localhost:1313/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-08-18T22:25:27+08:00" />
 <meta property="article:modified_time" content="2024-08-18T22:25:27+08:00" />
 
@@ -79,13 +79,13 @@
       "@type": "ListItem",
       "position":  1 ,
       "name": "文章",
-      "item": "https://ttttwwww.github.io/zh/posts/"
+      "item": "http://localhost:1313/zh/posts/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "Resumse算法推导",
-      "item": "https://ttttwwww.github.io/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/"
+      "item": "http://localhost:1313/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/"
     }
   ]
 }
@@ -100,7 +100,7 @@
   "keywords": [
     "Resume", "底层推导"
   ],
-  "articleBody": "Resume算法是Filip Ponulak等人提出的一种用于脉冲神经网络监督学习的权重更新算法，主要针对仿生神经元。 使用Resume算法训练后的仿生神经元，能够学习模拟任意脉冲序列，并基于脉冲的时间配置，对不同的脉冲序列分类。\n算法细节 神经网络的训练体现在权重的调节上，Resume算法是一种指导类型的算法，通过给定的脉冲序列以指导神经网络中权重的调节，从而使得神经网络有着相同的脉冲发放行为。\n具体而言，神经网络中权重的调节依赖于输入脉冲$x_i$，指导脉冲$y_d$，和真实脉冲$y_o$。 $$ \\Delta \\omega_{oi}=x_iy_d-x_iy_o\\ $$ 其中，输入脉冲是神经网络自身接收到的输入脉冲信号，指导脉冲是目标神经网络在输入脉冲刺激下产生的脉冲响应，真实脉冲则是当前神经网络在输入脉冲刺激下产生的脉冲响应。\n该过程可以类比STDP过程和反STDP过程。右侧表达式的第一项认为，该输入脉冲和发放的脉冲有关联，从而增强连接。第二项则认为，该输入脉冲于发放脉冲无关联，从而削弱脉冲。\n表达式对时间求导 $$ \\frac{d\\omega_{oi}}{dx_i}=X_{di}-X_{oi}\\ $$\n",
+  "articleBody": "Resume算法是Filip Ponulak等人提出的一种用于脉冲神经网络监督学习的权重更新算法，主要针对仿生神经元。 使用Resume算法训练后的仿生神经元，能够学习模拟任意脉冲序列，并基于脉冲的时间配置，对不同的脉冲序列分类。\n算法细节 神经网络的训练体现在权重的调节上，Resume算法是一种指导类型的算法，通过给定的脉冲序列以指导神经网络中权重的调节，从而使得神经网络有着相同的脉冲发放行为。\n具体而言，神经网络中权重的调节依赖于输入脉冲$x_i$，指导脉冲$y_d$，和真实脉冲$y_o$。 $$\r\\Delta \\omega_{oi}=x_iy_d-x_iy_o\\\\\r$$ 其中，输入脉冲是神经网络自身接收到的输入脉冲信号，指导脉冲是目标神经网络在输入脉冲刺激下产生的脉冲响应，真实脉冲则是当前神经网络在输入脉冲刺激下产生的脉冲响应。\n该过程可以类比STDP过程和反STDP过程。右侧表达式的第一项认为，该输入脉冲和发放的脉冲有关联，从而增强连接。第二项则认为，该输入脉冲于发放脉冲无关联，从而削弱脉冲。\n表达式对时间求导 $$\r\\frac{d\\omega_{oi}}{dx_i}=X_{di}-X_{oi}\\\\\r$$",
   "wordCount" : "424",
   "inLanguage": "zh",
   "datePublished": "2024-08-18T22:25:27+08:00",
@@ -111,14 +111,14 @@
   }],
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ttttwwww.github.io/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/"
+    "@id": "http://localhost:1313/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "ttttwwww's Blog",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://ttttwwww.github.io/favicon.ico"
+      "url": "http://localhost:1313/favicon.ico"
     }
   }
 }
@@ -143,7 +143,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://ttttwwww.github.io/zh/" accesskey="h" title="ttttwwww&#39;s Blog (Alt + H)">ttttwwww&#39;s Blog</a>
+            <a href="http://localhost:1313/zh/" accesskey="h" title="ttttwwww&#39;s Blog (Alt + H)">ttttwwww&#39;s Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -169,27 +169,27 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="https://ttttwwww.github.io/zh/search" title="搜索 (Alt &#43; /)" accesskey=/>
+                <a href="http://localhost:1313/zh/search" title="搜索 (Alt &#43; /)" accesskey=/>
                     <span>搜索</span>
                 </a>
             </li>
             <li>
-                <a href="https://ttttwwww.github.io/zh/" title="主页">
+                <a href="http://localhost:1313/zh/" title="主页">
                     <span>主页</span>
                 </a>
             </li>
             <li>
-                <a href="https://ttttwwww.github.io/zh/posts" title="文章">
+                <a href="http://localhost:1313/zh/posts" title="文章">
                     <span>文章</span>
                 </a>
             </li>
             <li>
-                <a href="https://ttttwwww.github.io/zh/archives" title="时间轴">
+                <a href="http://localhost:1313/zh/archives" title="时间轴">
                     <span>时间轴</span>
                 </a>
             </li>
             <li>
-                <a href="https://ttttwwww.github.io/zh/tags" title="标签">
+                <a href="http://localhost:1313/zh/tags" title="标签">
                     <span>标签</span>
                 </a>
             </li>
@@ -200,7 +200,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://ttttwwww.github.io/zh/">主页</a>&nbsp;»&nbsp;<a href="https://ttttwwww.github.io/zh/posts/">文章</a></div>
+    <div class="breadcrumbs"><a href="http://localhost:1313/zh/">主页</a>&nbsp;»&nbsp;<a href="http://localhost:1313/zh/posts/">文章</a></div>
     <h1 class="post-title entry-hint-parent">
       Resumse算法推导
     </h1>
@@ -288,26 +288,27 @@
 <h1 id="算法细节">算法细节<a hidden class="anchor" aria-hidden="true" href="#算法细节">#</a></h1>
 <p>神经网络的训练体现在权重的调节上，Resume算法是一种指导类型的算法，通过给定的脉冲序列以指导神经网络中权重的调节，从而使得神经网络有着相同的脉冲发放行为。</p>
 <p>具体而言，神经网络中权重的调节依赖于输入脉冲$x_i$，指导脉冲$y_d$，和真实脉冲$y_o$。
+</p>
 $$
-\Delta \omega_{oi}=x_iy_d-x_iy_o\
-$$
+\Delta \omega_{oi}=x_iy_d-x_iy_o\\
+$$<p>
 其中，输入脉冲是神经网络自身接收到的输入脉冲信号，指导脉冲是目标神经网络在输入脉冲刺激下产生的脉冲响应，真实脉冲则是当前神经网络在输入脉冲刺激下产生的脉冲响应。</p>
 <p>该过程可以类比STDP过程和反STDP过程。右侧表达式的第一项认为，该输入脉冲和发放的脉冲有关联，从而增强连接。第二项则认为，该输入脉冲于发放脉冲无关联，从而削弱脉冲。</p>
 <p>表达式对时间求导
+</p>
 $$
-\frac{d\omega_{oi}}{dx_i}=X_{di}-X_{oi}\
-$$</p>
-
+\frac{d\omega_{oi}}{dx_i}=X_{di}-X_{oi}\\
+$$
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ttttwwww.github.io/zh/tags/resume/">Resume</a></li>
-      <li><a href="https://ttttwwww.github.io/zh/tags/%E5%BA%95%E5%B1%82%E6%8E%A8%E5%AF%BC/">底层推导</a></li>
+      <li><a href="http://localhost:1313/zh/tags/resume/">Resume</a></li>
+      <li><a href="http://localhost:1313/zh/tags/%E5%BA%95%E5%B1%82%E6%8E%A8%E5%AF%BC/">底层推导</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">
+  <a class="prev" href="http://localhost:1313/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">
     <span class="title">« 上一页</span>
     <br>
     <span>交叉熵反向传播</span>
@@ -319,7 +320,7 @@ $$</p>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="https://ttttwwww.github.io/zh/">ttttwwww&#39;s Blog</a></span> · 
+        <span>&copy; 2024 <a href="http://localhost:1313/zh/">ttttwwww&#39;s Blog</a></span> · 
 
     <span>
         Powered by

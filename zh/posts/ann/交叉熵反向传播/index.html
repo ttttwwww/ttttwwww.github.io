@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -9,16 +9,16 @@
 <meta name="keywords" content="ANN, 底层推导">
 <meta name="description" content="在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。 交叉熵的定义公式为 $$">
 <meta name="author" content="ttttwwww">
-<link rel="canonical" href="https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">
+<link rel="canonical" href="http://localhost:1313/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.d3a26af427bfd58bda3afb76055d37ca2efc043066e0fc572e1126420f99fdb9.css" integrity="sha256-06Jq9Ce/1YvaOvt2BV03yi78BDBm4PxXLhEmQg&#43;Z/bk=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://ttttwwww.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://ttttwwww.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://ttttwwww.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://ttttwwww.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://ttttwwww.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">
+<link rel="alternate" hreflang="zh" href="http://localhost:1313/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">
 <noscript>
     <style>
         #theme-toggle,
@@ -61,7 +61,7 @@
 <meta property="og:title" content="交叉熵反向传播" />
 <meta property="og:description" content="在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。 交叉熵的定义公式为 $$" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="http://localhost:1313/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-08-18T23:40:48+08:00" />
 <meta property="article:modified_time" content="2024-08-18T23:40:48+08:00" />
 
@@ -79,13 +79,13 @@
       "@type": "ListItem",
       "position":  1 ,
       "name": "文章",
-      "item": "https://ttttwwww.github.io/zh/posts/"
+      "item": "http://localhost:1313/zh/posts/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "交叉熵反向传播",
-      "item": "https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/"
+      "item": "http://localhost:1313/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/"
     }
   ]
 }
@@ -100,8 +100,8 @@
   "keywords": [
     "ANN", "底层推导"
   ],
-  "articleBody": "在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。\n交叉熵的定义公式为 $$ H = -\\sum_{i}^n P(i)\\log Q(i) $$ 底数为log代表底数任取，在信息论中依照惯例取2，为了简化求导计算可以取e。\n其中P为事件的真实分布概率，Q为预测事件概率。当预测的分布概率于真实的分布概率越接近时，交叉熵的取值就越小。因此往往采用交叉熵作为分类任务的损失函数。\n在神经网络的最后一层输出通常是各个神经元的输出值，一般采用softmax函数等方式将其转化为均等的概率。在pytorch的代码中，计算交叉熵之前会对输入值自动进行softmax计算，无需额外增加一层softmax\n在pytorch的具体实现中，采用\n1 2 3 4 # 定义交叉熵损失函数 criterion = nn.CrossEntropyLoss() # 计算损失 loss = criterion(inputs, targets) 实际训练时的样本通常是一个数据集对应一个标签，而不是一个概率分布。因此最终的P(i)通常是二值的，即只有0和1，此时的交叉熵公式转变为 $$ H = -\\log Q(i) $$ 而Q一般由softmax函数得来，公式可以改写为 $$ H = -\\log \\frac{\\exp {y(i)}}{ \\sum\\limits_{j} \\exp y(j)} $$ 此处的y代表着最后一层神经元的输出值。在进行反向传播时对于一个如图所示的神经网络 z层代表最终的概率值，y为交叉熵公式中的y。假定此时的真实样本为yk，其他的标签的交叉熵导数为0，则反向传播将从zk开始。 首先考虑最后一层zk对y的影响，该层的影响为交叉熵对所有y层神经元输出求偏导有(为简化计算，log底数取e)\n$$ \\frac{\\partial H}{\\partial y_i} = \\frac{\\partial z_k}{\\partial y_i} = \\left{ \\begin{matrix} \\frac{\\exp(y_i)}{\\sum\\limits_n \\exp (y_i)}-1(i==k)\\ \\frac{\\exp(y_i)}{\\sum\\limits_n \\exp (y_i)} (i\\neq k) \\end{matrix} \\right. $$ 更新权重为负梯度，可以看到从yk处向后传的梯度是负数，其他神经元向后传播的梯度为正数。因此，yk前级的权重连接将得到增强，其他神经元的前级连接将被削弱。然后再看前级的梯度传播，首先考虑h层到y层的连接权重，此时的更新公式为 $$ \\frac{\\partial H}{\\partial W_{jk}}=\\frac{\\partial H}{\\partial y_k}*\\frac{\\partial y_k}{\\partial W_{jk}}=\\frac{\\partial H}{\\partial y_k}\\ y_k=f(W_{jk}*h_j+b) $$\n对于传统的ANN，$\\frac{\\partial y_k}{\\partial W_{jk}}=h_j*\\frac{df}{dh_j}$，f为激活函数，即此时变更权重的大小取决于hk神经元此时的发放值。神经元传输变量越大，则认为二者相关，会有较强的调整，但是式中还有激活函数的影响。例如sigmoid函数的导数会在输入值很大时趋于0，此时权重将几乎不会进行调整，并且可能导致梯度消失的问题，若采用relu函数，则当输入很大时，导数恒定为常数，权重将继续按照前级神经元的输出进行更新。\n在论文A neuromorphic physiological signal processing system based on VO2 memristor for next-generation human-machine interface中，其神经网络结构为 中间两层可以视为Hidden层。该神经网络为SNN，采用梯度替代的方式进行反向传播训练。神经元的发放函数的替代导数采用如下公式\n该公式产生的影响和sigmoid函数类似，当原本的权重过大或着过小时，权重的调节就会变得很缓慢，对于浅层的神经网络，只要权重不过大也许还是能脱出？\n",
-  "wordCount" : "1142",
+  "articleBody": "在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。\n交叉熵的定义公式为 $$ H = -\\sum_{i}^n P(i)\\log Q(i) $$ 底数为log代表底数任取，在信息论中依照惯例取2，为了简化求导计算可以取e。\n其中P为事件的真实分布概率，Q为预测事件概率。当预测的分布概率于真实的分布概率越接近时，交叉熵的取值就越小。因此往往采用交叉熵作为分类任务的损失函数。\n在神经网络的最后一层输出通常是各个神经元的输出值，一般采用softmax函数等方式将其转化为均等的概率。在pytorch的代码中，计算交叉熵之前会对输入值自动进行softmax计算，无需额外增加一层softmax\n在pytorch的具体实现中，采用\n1 2 3 4 # 定义交叉熵损失函数 criterion = nn.CrossEntropyLoss() # 计算损失 loss = criterion(inputs, targets) 实际训练时的样本通常是一个数据集对应一个标签，而不是一个概率分布。因此最终的P(i)通常是二值的，即只有0和1，此时的交叉熵公式转变为 $$ H = -\\log Q(i) $$ 而Q一般由softmax函数得来，公式可以改写为 $$ H = -\\log \\frac{\\exp {y(i)}}{ \\sum\\limits_{j} \\exp y(j)} $$ 此处的y代表着最后一层神经元的输出值。在进行反向传播时对于一个如图所示的神经网络 z层代表最终的概率值，y为交叉熵公式中的y。假定此时的真实样本为yk，其他的标签的交叉熵导数为0，则反向传播将从zk开始。 首先考虑最后一层zk对y的影响，该层的影响为交叉熵对所有y层神经元输出求偏导有(为简化计算，log底数取e)\n$$ \\frac{\\partial H}{\\partial y_i} = \\frac{\\partial z_k}{\\partial y_i} = \\left\\{ \\begin{matrix} \\frac{\\exp(y_i)}{\\sum\\limits_n \\exp (y_i)}-1(i==k)\\\\ \\frac{\\exp(y_i)}{\\sum\\limits_n \\exp (y_i)} (i\\neq k) \\end{matrix} \\right. $$更新权重为负梯度，可以看到从yk处向后传的梯度是负数，其他神经元向后传播的梯度为正数。因此，yk前级的权重连接将得到增强，其他神经元的前级连接将被削弱。然后再看前级的梯度传播，首先考虑h层到y层的连接权重，此时的更新公式为 $$ \\frac{\\partial H}{\\partial W_{jk}}=\\frac{\\partial H}{\\partial y_k}*\\frac{\\partial y_k}{\\partial W_{jk}}=\\frac{\\partial H}{\\partial y_k}\\\\ y_k=f(W_{jk}*h_j+b) $$ 对于传统的ANN，$\\frac{\\partial y_k}{\\partial W_{jk}}=h_j*\\frac{df}{dh_j}$，f为激活函数，即此时变更权重的大小取决于hk神经元此时的发放值。神经元传输变量越大，则认为二者相关，会有较强的调整，但是式中还有激活函数的影响。例如sigmoid函数的导数会在输入值很大时趋于0，此时权重将几乎不会进行调整，并且可能导致梯度消失的问题，若采用relu函数，则当输入很大时，导数恒定为常数，权重将继续按照前级神经元的输出进行更新。\n在论文A neuromorphic physiological signal processing system based on VO2 memristor for next-generation human-machine interface中，其神经网络结构为 中间两层可以视为Hidden层。该神经网络为SNN，采用梯度替代的方式进行反向传播训练。神经元的发放函数的替代导数采用如下公式\n该公式产生的影响和sigmoid函数类似，当原本的权重过大或着过小时，权重的调节就会变得很缓慢，对于浅层的神经网络，只要权重不过大也许还是能脱出？\n",
+  "wordCount" : "1143",
   "inLanguage": "zh",
   "datePublished": "2024-08-18T23:40:48+08:00",
   "dateModified": "2024-08-18T23:40:48+08:00",
@@ -111,14 +111,14 @@
   }],
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/"
+    "@id": "http://localhost:1313/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "ttttwwww's Blog",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://ttttwwww.github.io/favicon.ico"
+      "url": "http://localhost:1313/favicon.ico"
     }
   }
 }
@@ -143,7 +143,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://ttttwwww.github.io/zh/" accesskey="h" title="ttttwwww&#39;s Blog (Alt + H)">ttttwwww&#39;s Blog</a>
+            <a href="http://localhost:1313/zh/" accesskey="h" title="ttttwwww&#39;s Blog (Alt + H)">ttttwwww&#39;s Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -169,27 +169,27 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="https://ttttwwww.github.io/zh/search" title="搜索 (Alt &#43; /)" accesskey=/>
+                <a href="http://localhost:1313/zh/search" title="搜索 (Alt &#43; /)" accesskey=/>
                     <span>搜索</span>
                 </a>
             </li>
             <li>
-                <a href="https://ttttwwww.github.io/zh/" title="主页">
+                <a href="http://localhost:1313/zh/" title="主页">
                     <span>主页</span>
                 </a>
             </li>
             <li>
-                <a href="https://ttttwwww.github.io/zh/posts" title="文章">
+                <a href="http://localhost:1313/zh/posts" title="文章">
                     <span>文章</span>
                 </a>
             </li>
             <li>
-                <a href="https://ttttwwww.github.io/zh/archives" title="时间轴">
+                <a href="http://localhost:1313/zh/archives" title="时间轴">
                     <span>时间轴</span>
                 </a>
             </li>
             <li>
-                <a href="https://ttttwwww.github.io/zh/tags" title="标签">
+                <a href="http://localhost:1313/zh/tags" title="标签">
                     <span>标签</span>
                 </a>
             </li>
@@ -200,7 +200,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://ttttwwww.github.io/zh/">主页</a>&nbsp;»&nbsp;<a href="https://ttttwwww.github.io/zh/posts/">文章</a></div>
+    <div class="breadcrumbs"><a href="http://localhost:1313/zh/">主页</a>&nbsp;»&nbsp;<a href="http://localhost:1313/zh/posts/">文章</a></div>
     <h1 class="post-title entry-hint-parent">
       交叉熵反向传播
     </h1>
@@ -211,9 +211,10 @@
 
   <div class="post-content"><p>在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。</p>
 <p>交叉熵的定义公式为
+</p>
 $$
 H = -\sum_{i}^n P(i)\log Q(i)
-$$
+$$<p>
 底数为log代表底数任取，在信息论中依照惯例取2，为了简化求导计算可以取e。</p>
 <p>其中P为事件的真实分布概率，Q为预测事件概率。当预测的分布概率于真实的分布概率越接近时，交叉熵的取值就越小。因此往往采用交叉熵作为分类任务的损失函数。</p>
 <p>在神经网络的最后一层输出通常是各个神经元的输出值，一般采用softmax函数等方式将其转化为均等的概率。<strong>在pytorch的代码中，计算交叉熵之前会对输入值自动进行softmax计算，无需额外增加一层softmax</strong></p>
@@ -233,32 +234,34 @@ $$
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>实际训练时的样本通常是一个数据集对应一个标签，而不是一个概率分布。因此最终的P(i)通常是二值的，即只有0和1，此时的交叉熵公式转变为
+</p>
 $$
 H = -\log Q(i)
-$$
+$$<p>
 而Q一般由softmax函数得来，公式可以改写为
+</p>
 $$
 H = -\log \frac{\exp {y(i)}}{ \sum\limits_{j} \exp y(j)}
-$$
+$$<p>
 此处的y代表着最后一层神经元的输出值。在进行反向传播时对于一个如图所示的神经网络
 <img loading="lazy" src="image.png" alt="alt text"  />
 
 z层代表最终的概率值，y为交叉熵公式中的y。假定此时的真实样本为yk，其他的标签的交叉熵导数为0，则反向传播将从zk开始。
 首先考虑最后一层zk对y的影响，该层的影响为交叉熵对所有y层神经元输出求偏导有(为简化计算，log底数取e)</p>
-<p>$$
-\frac{\partial H}{\partial y_i} = \frac{\partial z_k}{\partial y_i} = \left{
-\begin{matrix}
-\frac{\exp(y_i)}{\sum\limits_n \exp (y_i)}-1(i==k)\
-\frac{\exp(y_i)}{\sum\limits_n \exp (y_i)} (i\neq k)
-\end{matrix}
+$$
+\frac{\partial H}{\partial y_i} = \frac{\partial z_k}{\partial y_i} = \left\{
+    \begin{matrix}
+        \frac{\exp(y_i)}{\sum\limits_n \exp (y_i)}-1(i==k)\\
+        \frac{\exp(y_i)}{\sum\limits_n \exp (y_i)} (i\neq k)
+    \end{matrix}
 \right.
+$$<p>更新权重为负梯度，可以看到从yk处向后传的梯度是负数，其他神经元向后传播的梯度为正数。因此，yk前级的权重连接将得到增强，其他神经元的前级连接将被削弱。然后再看前级的梯度传播，首先考虑h层到y层的连接权重，此时的更新公式为
+</p>
 $$
-更新权重为负梯度，可以看到从yk处向后传的梯度是负数，其他神经元向后传播的梯度为正数。因此，yk前级的权重连接将得到增强，其他神经元的前级连接将被削弱。然后再看前级的梯度传播，首先考虑h层到y层的连接权重，此时的更新公式为
-$$
-\frac{\partial H}{\partial W_{jk}}=\frac{\partial H}{\partial y_k}*\frac{\partial y_k}{\partial W_{jk}}=\frac{\partial H}{\partial y_k}\
+\frac{\partial H}{\partial W_{jk}}=\frac{\partial H}{\partial y_k}*\frac{\partial y_k}{\partial W_{jk}}=\frac{\partial H}{\partial y_k}\\
 y_k=f(W_{jk}*h_j+b)
-$$</p>
-<p>对于传统的ANN，$\frac{\partial y_k}{\partial W_{jk}}=h_j*\frac{df}{dh_j}$，f为激活函数，即此时变更权重的大小取决于hk神经元此时的发放值。神经元传输变量越大，则认为二者相关，会有较强的调整，但是式中还有激活函数的影响。例如sigmoid函数的导数会在输入值很大时趋于0，此时权重将几乎不会进行调整，并且可能导致梯度消失的问题，若采用relu函数，则当输入很大时，导数恒定为常数，权重将继续按照前级神经元的输出进行更新。</p>
+$$<p>
+对于传统的ANN，$\frac{\partial y_k}{\partial W_{jk}}=h_j*\frac{df}{dh_j}$，f为激活函数，即此时变更权重的大小取决于hk神经元此时的发放值。神经元传输变量越大，则认为二者相关，会有较强的调整，但是式中还有激活函数的影响。例如sigmoid函数的导数会在输入值很大时趋于0，此时权重将几乎不会进行调整，并且可能导致梯度消失的问题，若采用relu函数，则当输入很大时，导数恒定为常数，权重将继续按照前级神经元的输出进行更新。</p>
 <p>在论文A neuromorphic physiological signal processing system based on VO2 memristor for next-generation human-machine interface中，其神经网络结构为
 <img loading="lazy" src="image-1.png" alt="alt text"  />
 </p>
@@ -272,11 +275,11 @@ $$</p>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://ttttwwww.github.io/zh/tags/ann/">ANN</a></li>
-      <li><a href="https://ttttwwww.github.io/zh/tags/%E5%BA%95%E5%B1%82%E6%8E%A8%E5%AF%BC/">底层推导</a></li>
+      <li><a href="http://localhost:1313/zh/tags/ann/">ANN</a></li>
+      <li><a href="http://localhost:1313/zh/tags/%E5%BA%95%E5%B1%82%E6%8E%A8%E5%AF%BC/">底层推导</a></li>
     </ul>
 <nav class="paginav">
-  <a class="next" href="https://ttttwwww.github.io/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/">
+  <a class="next" href="http://localhost:1313/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/">
     <span class="title">下一页 »</span>
     <br>
     <span>Resumse算法推导</span>
@@ -288,7 +291,7 @@ $$</p>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="https://ttttwwww.github.io/zh/">ttttwwww&#39;s Blog</a></span> · 
+        <span>&copy; 2024 <a href="http://localhost:1313/zh/">ttttwwww&#39;s Blog</a></span> · 
 
     <span>
         Powered by

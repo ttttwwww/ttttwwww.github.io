@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>ANN on ttttwwww&#39;s Blog</title>
-    <link>https://ttttwwww.github.io/zh/categories/ann/</link>
+    <link>http://localhost:1313/zh/categories/ann/</link>
     <description>Recent content in ANN on ttttwwww&#39;s Blog</description>
     <generator>Hugo -- 0.132.2</generator>
     <language>zh</language>
     <lastBuildDate>Sun, 18 Aug 2024 23:40:48 +0800</lastBuildDate>
-    <atom:link href="https://ttttwwww.github.io/zh/categories/ann/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/zh/categories/ann/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>交叉熵反向传播</title>
-      <link>https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</link>
+      <link>http://localhost:1313/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</link>
       <pubDate>Sun, 18 Aug 2024 23:40:48 +0800</pubDate>
-      <guid>https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</guid>
+      <guid>http://localhost:1313/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</guid>
       <description>在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。 交叉熵的定义公式为 $$</description>
     </item>
   </channel>
