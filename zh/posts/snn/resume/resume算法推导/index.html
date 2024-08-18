@@ -207,20 +207,81 @@
     <div class="post-meta"><span title='2024-08-18 22:25:27 +0800 CST'>2024-08-18</span>&nbsp;·&nbsp;1 分钟&nbsp;·&nbsp;ttttwwww
 
 </div>
-  </header> <div class="toc">
-    <details  open>
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">目录</span>
-        </summary>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">目录</span>
+            </summary>
 
-        <div class="inner"><ul>
-                <li>
-                    <a href="#%e7%ae%97%e6%b3%95%e7%bb%86%e8%8a%82" aria-label="算法细节">算法细节</a>
-                </li>
-            </ul>
-        </div>
-    </details>
-</div>
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e7%ae%97%e6%b3%95%e7%bb%86%e8%8a%82" aria-label="算法细节">算法细节</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
 
   <div class="post-content"><p>Resume算法是Filip Ponulak等人提出的一种用于脉冲神经网络监督学习的权重更新算法，主要针对仿生神经元。
 使用Resume算法训练后的仿生神经元，能够学习模拟任意脉冲序列，并基于脉冲的时间配置，对不同的脉冲序列分类。</p>
@@ -245,13 +306,6 @@ $$</p>
       <li><a href="https://ttttwwww.github.io/zh/tags/resume/">Resume</a></li>
       <li><a href="https://ttttwwww.github.io/zh/tags/%E8%84%89%E5%86%B2%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83%E7%AE%97%E6%B3%95/">脉冲神经网络训练算法</a></li>
     </ul>
-<nav class="paginav">
-  <a class="next" href="https://ttttwwww.github.io/zh/posts/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/">
-    <span class="title">下一页 »</span>
-    <br>
-    <span></span>
-  </a>
-</nav>
 
   </footer>
 </article>
