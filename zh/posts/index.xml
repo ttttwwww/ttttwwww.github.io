@@ -6,8 +6,15 @@
     <description>Recent content in 文章 on ttttwwww&#39;s Blog</description>
     <generator>Hugo -- 0.132.2</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 18 Aug 2024 22:25:27 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 18 Aug 2024 23:40:48 +0800</lastBuildDate>
     <atom:link href="https://ttttwwww.github.io/zh/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>交叉熵反向传播</title>
+      <link>https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</link>
+      <pubDate>Sun, 18 Aug 2024 23:40:48 +0800</pubDate>
+      <guid>https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</guid>
+      <description>在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。 交叉熵的定义公式为 $$</description>
+    </item>
     <item>
       <title>Resumse算法推导</title>
       <link>https://ttttwwww.github.io/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/</link>

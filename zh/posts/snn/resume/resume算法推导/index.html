@@ -6,11 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Resumse算法推导 | ttttwwww&#39;s Blog</title>
-<meta name="keywords" content="Resume, 脉冲神经网络训练算法">
+<meta name="keywords" content="Resume, 底层推导">
 <meta name="description" content="Resume算法是Filip Ponulak等人提出的一种用于脉冲神经网络监督学习的权重更新算法，主要针对仿生神经元。 使用Resume算法训练">
 <meta name="author" content="ttttwwww">
 <link rel="canonical" href="https://ttttwwww.github.io/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d3a26af427bfd58bda3afb76055d37ca2efc043066e0fc572e1126420f99fdb9.css" integrity="sha256-06Jq9Ce/1YvaOvt2BV03yi78BDBm4PxXLhEmQg&#43;Z/bk=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://ttttwwww.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://ttttwwww.github.io/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://ttttwwww.github.io/favicon-32x32.png">
@@ -98,7 +98,7 @@
   "name": "Resumse算法推导",
   "description": "Resume算法是Filip Ponulak等人提出的一种用于脉冲神经网络监督学习的权重更新算法，主要针对仿生神经元。 使用Resume算法训练",
   "keywords": [
-    "Resume", "脉冲神经网络训练算法"
+    "Resume", "底层推导"
   ],
   "articleBody": "Resume算法是Filip Ponulak等人提出的一种用于脉冲神经网络监督学习的权重更新算法，主要针对仿生神经元。 使用Resume算法训练后的仿生神经元，能够学习模拟任意脉冲序列，并基于脉冲的时间配置，对不同的脉冲序列分类。\n算法细节 神经网络的训练体现在权重的调节上，Resume算法是一种指导类型的算法，通过给定的脉冲序列以指导神经网络中权重的调节，从而使得神经网络有着相同的脉冲发放行为。\n具体而言，神经网络中权重的调节依赖于输入脉冲$x_i$，指导脉冲$y_d$，和真实脉冲$y_o$。 $$ \\Delta \\omega_{oi}=x_iy_d-x_iy_o\\ $$ 其中，输入脉冲是神经网络自身接收到的输入脉冲信号，指导脉冲是目标神经网络在输入脉冲刺激下产生的脉冲响应，真实脉冲则是当前神经网络在输入脉冲刺激下产生的脉冲响应。\n该过程可以类比STDP过程和反STDP过程。右侧表达式的第一项认为，该输入脉冲和发放的脉冲有关联，从而增强连接。第二项则认为，该输入脉冲于发放脉冲无关联，从而削弱脉冲。\n表达式对时间求导 $$ \\frac{d\\omega_{oi}}{dx_i}=X_{di}-X_{oi}\\ $$\n",
   "wordCount" : "424",
@@ -304,8 +304,15 @@ $$</p>
   <footer class="post-footer">
     <ul class="post-tags">
       <li><a href="https://ttttwwww.github.io/zh/tags/resume/">Resume</a></li>
-      <li><a href="https://ttttwwww.github.io/zh/tags/%E8%84%89%E5%86%B2%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83%E7%AE%97%E6%B3%95/">脉冲神经网络训练算法</a></li>
+      <li><a href="https://ttttwwww.github.io/zh/tags/%E5%BA%95%E5%B1%82%E6%8E%A8%E5%AF%BC/">底层推导</a></li>
     </ul>
+<nav class="paginav">
+  <a class="prev" href="https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>交叉熵反向传播</span>
+  </a>
+</nav>
 
   </footer>
 </article>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>交叉熵反向传播 | ttttwwww&#39;s Blog</title>
+<meta name="keywords" content="ANN, 底层推导">
+<meta name="description" content="在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。 交叉熵的定义公式为 $$">
+<meta name="author" content="ttttwwww">
+<link rel="canonical" href="https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d3a26af427bfd58bda3afb76055d37ca2efc043066e0fc572e1126420f99fdb9.css" integrity="sha256-06Jq9Ce/1YvaOvt2BV03yi78BDBm4PxXLhEmQg&#43;Z/bk=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://ttttwwww.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ttttwwww.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ttttwwww.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ttttwwww.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ttttwwww.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="交叉熵反向传播" />
+<meta property="og:description" content="在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。 交叉熵的定义公式为 $$" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-08-18T23:40:48+08:00" />
+<meta property="article:modified_time" content="2024-08-18T23:40:48+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="交叉熵反向传播"/>
+<meta name="twitter:description" content="在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。 交叉熵的定义公式为 $$"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "文章",
+      "item": "https://ttttwwww.github.io/zh/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "交叉熵反向传播",
+      "item": "https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "交叉熵反向传播",
+  "name": "交叉熵反向传播",
+  "description": "在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。 交叉熵的定义公式为 $$",
+  "keywords": [
+    "ANN", "底层推导"
+  ],
+  "articleBody": "在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。\n交叉熵的定义公式为 $$ H = -\\sum_{i}^n P(i)\\log Q(i) $$ 底数为log代表底数任取，在信息论中依照惯例取2，为了简化求导计算可以取e。\n其中P为事件的真实分布概率，Q为预测事件概率。当预测的分布概率于真实的分布概率越接近时，交叉熵的取值就越小。因此往往采用交叉熵作为分类任务的损失函数。\n在神经网络的最后一层输出通常是各个神经元的输出值，一般采用softmax函数等方式将其转化为均等的概率。在pytorch的代码中，计算交叉熵之前会对输入值自动进行softmax计算，无需额外增加一层softmax\n在pytorch的具体实现中，采用\n1 2 3 4 # 定义交叉熵损失函数 criterion = nn.CrossEntropyLoss() # 计算损失 loss = criterion(inputs, targets) 实际训练时的样本通常是一个数据集对应一个标签，而不是一个概率分布。因此最终的P(i)通常是二值的，即只有0和1，此时的交叉熵公式转变为 $$ H = -\\log Q(i) $$ 而Q一般由softmax函数得来，公式可以改写为 $$ H = -\\log \\frac{\\exp {y(i)}}{ \\sum\\limits_{j} \\exp y(j)} $$ 此处的y代表着最后一层神经元的输出值。在进行反向传播时对于一个如图所示的神经网络 z层代表最终的概率值，y为交叉熵公式中的y。假定此时的真实样本为yk，其他的标签的交叉熵导数为0，则反向传播将从zk开始。 首先考虑最后一层zk对y的影响，该层的影响为交叉熵对所有y层神经元输出求偏导有(为简化计算，log底数取e)\n$$ \\frac{\\partial H}{\\partial y_i} = \\frac{\\partial z_k}{\\partial y_i} = \\left{ \\begin{matrix} \\frac{\\exp(y_i)}{\\sum\\limits_n \\exp (y_i)}-1(i==k)\\ \\frac{\\exp(y_i)}{\\sum\\limits_n \\exp (y_i)} (i\\neq k) \\end{matrix} \\right. $$ 更新权重为负梯度，可以看到从yk处向后传的梯度是负数，其他神经元向后传播的梯度为正数。因此，yk前级的权重连接将得到增强，其他神经元的前级连接将被削弱。然后再看前级的梯度传播，首先考虑h层到y层的连接权重，此时的更新公式为 $$ \\frac{\\partial H}{\\partial W_{jk}}=\\frac{\\partial H}{\\partial y_k}*\\frac{\\partial y_k}{\\partial W_{jk}}=\\frac{\\partial H}{\\partial y_k}\\ y_k=f(W_{jk}*h_j+b) $$\n对于传统的ANN，$\\frac{\\partial y_k}{\\partial W_{jk}}=h_j*\\frac{df}{dh_j}$，f为激活函数，即此时变更权重的大小取决于hk神经元此时的发放值。神经元传输变量越大，则认为二者相关，会有较强的调整，但是式中还有激活函数的影响。例如sigmoid函数的导数会在输入值很大时趋于0，此时权重将几乎不会进行调整，并且可能导致梯度消失的问题，若采用relu函数，则当输入很大时，导数恒定为常数，权重将继续按照前级神经元的输出进行更新。\n在论文A neuromorphic physiological signal processing system based on VO2 memristor for next-generation human-machine interface中，其神经网络结构为 中间两层可以视为Hidden层。该神经网络为SNN，采用梯度替代的方式进行反向传播训练。神经元的发放函数的替代导数采用如下公式\n该公式产生的影响和sigmoid函数类似，当原本的权重过大或着过小时，权重的调节就会变得很缓慢，对于浅层的神经网络，只要权重不过大也许还是能脱出？\n",
+  "wordCount" : "1142",
+  "inLanguage": "zh",
+  "datePublished": "2024-08-18T23:40:48+08:00",
+  "dateModified": "2024-08-18T23:40:48+08:00",
+  "author":[{
+    "@type": "Person",
+    "name": "ttttwwww"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ttttwwww.github.io/zh/posts/ann/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ttttwwww's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ttttwwww.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ttttwwww.github.io/zh/" accesskey="h" title="ttttwwww&#39;s Blog (Alt + H)">ttttwwww&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://ttttwwww.github.io/zh/search" title="搜索 (Alt &#43; /)" accesskey=/>
+                    <span>搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ttttwwww.github.io/zh/" title="主页">
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ttttwwww.github.io/zh/posts" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ttttwwww.github.io/zh/archives" title="时间轴">
+                    <span>时间轴</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ttttwwww.github.io/zh/tags" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://ttttwwww.github.io/zh/">主页</a>&nbsp;»&nbsp;<a href="https://ttttwwww.github.io/zh/posts/">文章</a></div>
+    <h1 class="post-title entry-hint-parent">
+      交叉熵反向传播
+    </h1>
+    <div class="post-meta"><span title='2024-08-18 23:40:48 +0800 CST'>2024-08-18</span>&nbsp;·&nbsp;3 分钟&nbsp;·&nbsp;ttttwwww
+
+</div>
+  </header> 
+
+  <div class="post-content"><p>在神经网络的训练中会采用各样的损失函数以衡量预测值和真实值之间的偏离程度，交叉熵是其中一种广泛应用于分类任务的损失函数。</p>
+<p>交叉熵的定义公式为
+$$
+H = -\sum_{i}^n P(i)\log Q(i)
+$$
+底数为log代表底数任取，在信息论中依照惯例取2，为了简化求导计算可以取e。</p>
+<p>其中P为事件的真实分布概率，Q为预测事件概率。当预测的分布概率于真实的分布概率越接近时，交叉熵的取值就越小。因此往往采用交叉熵作为分类任务的损失函数。</p>
+<p>在神经网络的最后一层输出通常是各个神经元的输出值，一般采用softmax函数等方式将其转化为均等的概率。<strong>在pytorch的代码中，计算交叉熵之前会对输入值自动进行softmax计算，无需额外增加一层softmax</strong></p>
+<p>在pytorch的具体实现中，采用</p>
+<div class="highlight"><div style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#727272">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#727272">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#727272">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#727272">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#007f7f"># 定义交叉熵损失函数</span>
+</span></span><span style="display:flex;"><span>criterion = nn.CrossEntropyLoss()
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># 计算损失</span>
+</span></span><span style="display:flex;"><span>loss = criterion(inputs, targets)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>实际训练时的样本通常是一个数据集对应一个标签，而不是一个概率分布。因此最终的P(i)通常是二值的，即只有0和1，此时的交叉熵公式转变为
+$$
+H = -\log Q(i)
+$$
+而Q一般由softmax函数得来，公式可以改写为
+$$
+H = -\log \frac{\exp {y(i)}}{ \sum\limits_{j} \exp y(j)}
+$$
+此处的y代表着最后一层神经元的输出值。在进行反向传播时对于一个如图所示的神经网络
+<img loading="lazy" src="image.png" alt="alt text"  />
+
+z层代表最终的概率值，y为交叉熵公式中的y。假定此时的真实样本为yk，其他的标签的交叉熵导数为0，则反向传播将从zk开始。
+首先考虑最后一层zk对y的影响，该层的影响为交叉熵对所有y层神经元输出求偏导有(为简化计算，log底数取e)</p>
+<p>$$
+\frac{\partial H}{\partial y_i} = \frac{\partial z_k}{\partial y_i} = \left{
+\begin{matrix}
+\frac{\exp(y_i)}{\sum\limits_n \exp (y_i)}-1(i==k)\
+\frac{\exp(y_i)}{\sum\limits_n \exp (y_i)} (i\neq k)
+\end{matrix}
+\right.
+$$
+更新权重为负梯度，可以看到从yk处向后传的梯度是负数，其他神经元向后传播的梯度为正数。因此，yk前级的权重连接将得到增强，其他神经元的前级连接将被削弱。然后再看前级的梯度传播，首先考虑h层到y层的连接权重，此时的更新公式为
+$$
+\frac{\partial H}{\partial W_{jk}}=\frac{\partial H}{\partial y_k}*\frac{\partial y_k}{\partial W_{jk}}=\frac{\partial H}{\partial y_k}\
+y_k=f(W_{jk}*h_j+b)
+$$</p>
+<p>对于传统的ANN，$\frac{\partial y_k}{\partial W_{jk}}=h_j*\frac{df}{dh_j}$，f为激活函数，即此时变更权重的大小取决于hk神经元此时的发放值。神经元传输变量越大，则认为二者相关，会有较强的调整，但是式中还有激活函数的影响。例如sigmoid函数的导数会在输入值很大时趋于0，此时权重将几乎不会进行调整，并且可能导致梯度消失的问题，若采用relu函数，则当输入很大时，导数恒定为常数，权重将继续按照前级神经元的输出进行更新。</p>
+<p>在论文A neuromorphic physiological signal processing system based on VO2 memristor for next-generation human-machine interface中，其神经网络结构为
+<img loading="lazy" src="image-1.png" alt="alt text"  />
+</p>
+<p>中间两层可以视为Hidden层。该神经网络为SNN，采用梯度替代的方式进行反向传播训练。神经元的发放函数的替代导数采用如下公式</p>
+<p><img loading="lazy" src="image-2.png" alt="alt text"  />
+</p>
+<p>该公式产生的影响和sigmoid函数类似，当原本的权重过大或着过小时，权重的调节就会变得很缓慢，对于浅层的神经网络，只要权重不过大也许还是能脱出？</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ttttwwww.github.io/zh/tags/ann/">ANN</a></li>
+      <li><a href="https://ttttwwww.github.io/zh/tags/%E5%BA%95%E5%B1%82%E6%8E%A8%E5%AF%BC/">底层推导</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ttttwwww.github.io/zh/posts/snn/resume/resume%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>Resumse算法推导</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="https://ttttwwww.github.io/zh/">ttttwwww&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
