@@ -6,20 +6,41 @@
     <description>Recent content in Tags on ttttwwww&#39;s Blog</description>
     <generator>Hugo -- 0.132.2</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 19 Aug 2024 23:27:24 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 06 Sep 2024 17:36:56 +0800</lastBuildDate>
     <atom:link href="https://ttttwwww.github.io/zh/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>标签1</title>
       <link>https://ttttwwww.github.io/zh/tags/%E6%A0%87%E7%AD%BE1/</link>
-      <pubDate>Mon, 19 Aug 2024 23:27:24 +0800</pubDate>
+      <pubDate>Fri, 06 Sep 2024 17:36:56 +0800</pubDate>
       <guid>https://ttttwwww.github.io/zh/tags/%E6%A0%87%E7%AD%BE1/</guid>
       <description></description>
     </item>
     <item>
       <title>标签2</title>
       <link>https://ttttwwww.github.io/zh/tags/%E6%A0%87%E7%AD%BE2/</link>
-      <pubDate>Mon, 19 Aug 2024 23:27:24 +0800</pubDate>
+      <pubDate>Fri, 06 Sep 2024 17:36:56 +0800</pubDate>
       <guid>https://ttttwwww.github.io/zh/tags/%E6%A0%87%E7%AD%BE2/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Debug</title>
+      <link>https://ttttwwww.github.io/zh/tags/debug/</link>
+      <pubDate>Mon, 19 Aug 2024 23:27:24 +0800</pubDate>
+      <guid>https://ttttwwww.github.io/zh/tags/debug/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Multiprocess</title>
+      <link>https://ttttwwww.github.io/zh/tags/multiprocess/</link>
+      <pubDate>Mon, 19 Aug 2024 23:27:24 +0800</pubDate>
+      <guid>https://ttttwwww.github.io/zh/tags/multiprocess/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pool.apply_async</title>
+      <link>https://ttttwwww.github.io/zh/tags/pool.apply_async/</link>
+      <pubDate>Mon, 19 Aug 2024 23:27:24 +0800</pubDate>
+      <guid>https://ttttwwww.github.io/zh/tags/pool.apply_async/</guid>
       <description></description>
     </item>
     <item>
