@@ -15,12 +15,5 @@
       <guid>https://ttttwwww.github.io/zh/posts/paper-reading-notes/boosting-mobile-cnn-inference-through-semantic-memory/</guid>
       <description>文章简介 本文借鉴了心里学中的priming effect，类似长短时程记忆的概念即人脑会对提前收到的刺激有更快的响应，提出了SMTM（Sema</description>
     </item>
-    <item>
-      <title>T SNE</title>
-      <link>https://ttttwwww.github.io/zh/posts/math-algorithm/t-sne/</link>
-      <pubDate>Fri, 06 Sep 2024 17:35:19 +0800</pubDate>
-      <guid>https://ttttwwww.github.io/zh/posts/math-algorithm/t-sne/</guid>
-      <description>t-SNE t-SNE全称为t-distributed Stochastic Neighbor Embedding，t随机邻近嵌入。是效果最好的数据降维和可视化方法之一，用于将高维数据集投</description>
-    </item>
   </channel>
 </rss>
